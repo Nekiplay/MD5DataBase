@@ -14,7 +14,7 @@ namespace MD5DataBase
         {
             using (WebClient wc = new WebClient())
             {
-                string json = wc.DownloadString("https://raw.githubusercontent.com/Nekiplay/FilesMD5List/main/list/" + md5 + ".json");
+                string json = wc.DownloadString("https://github.com/Nekiplay/MD5List/raw/main/files/" + md5 + ".json");
                 return MD5Info.FromJson(json);
             }
         }
