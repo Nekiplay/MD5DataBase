@@ -14,7 +14,7 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Console.Title = "FileInfo by MD5";
-            MD5Extractor extractor = new MD5Extractor();
+            SHA3Extractor extractor = new SHA3Extractor();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("File path: ");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -24,7 +24,7 @@ namespace ConsoleApp1
             {
                 if (fileInfo.Exists)
                 {
-                    MD5Info info = extractor.GetInfoFromCloud(fileInfo);
+                    SHA3FileInfo info = extractor.GetFileInfoFromCloud(fileInfo);
                     Console.Clear();
                     Console.Title = "FileInfo by MD5 | " + info.hash.SHA256;
                     Console.ForegroundColor = ConsoleColor.White;
@@ -32,7 +32,7 @@ namespace ConsoleApp1
                 }
                 else
                 {
-                    MD5Info info = extractor.GetInfoFromCloud(filePath);
+                    SHA3FileInfo info = extractor.GetFileInfoFromCloud(filePath);
                     Console.Clear();
                     Console.Title = "FileInfo by MD5 | " + info.hash.SHA256;
                     Console.ForegroundColor = ConsoleColor.White;
@@ -44,7 +44,7 @@ namespace ConsoleApp1
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Not found in cloud, creating new file info");
                 Console.WriteLine();
-                MD5Info info = new MD5Info();
+                SHA3FileInfo info = new SHA3FileInfo();
                 info.hash.MD5 = HashUtils.GetMD5Hash(fileInfo);
                 info.hash.SHA256 = HashUtils.GetSHA2565Hash(fileInfo);
                 info.Extension = fileInfo.Extension;
@@ -73,7 +73,7 @@ namespace ConsoleApp1
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 info.Site = Console.ReadLine();
 
-                string[] names = Enum.GetNames(typeof(MD5Info.Type));
+                string[] names = Enum.GetNames(typeof(SHA3FileInfo.Type));
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Available types: ");
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -84,10 +84,10 @@ namespace ConsoleApp1
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 string typestring = Console.ReadLine();
                 string[] splited = typestring.Split(',');
-                info.Types = new List<MD5Info.Type>();
+                info.Types = new List<SHA3FileInfo.Type>();
                 foreach (string s in splited)
                 {
-                    MD5Info.Type type = MD5Info.Type.Cheat;
+                    SHA3FileInfo.Type type = SHA3FileInfo.Type.Cheat;
                     if (Enum.TryParse(s, out type))
                     {
                         info.Types.Add(type);
@@ -95,8 +95,8 @@ namespace ConsoleApp1
                 }
                 string last_lib = "";
                 string last_used = "";
-                info.Used = new List<MD5Info.Hash>();
-                info.Libs = new List<MD5Info.Hash>();
+                info.Used = new List<HashInfo>();
+                info.Libs = new List<HashInfo>();
                 newlib:
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -121,7 +121,7 @@ namespace ConsoleApp1
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                     string path = Console.ReadLine();
                     FileInfo info1 = new FileInfo(path.Replace("\"", ""));
-                    MD5Info.Hash hash = new MD5Info.Hash();
+                    HashInfo hash = new HashInfo();
                     hash.SHA256 = HashUtils.GetSHA2565Hash(info1);
                     hash.MD5 = HashUtils.GetMD5Hash(info1);
                     info.Libs.Add(hash);
@@ -155,7 +155,7 @@ namespace ConsoleApp1
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
                         string path = Console.ReadLine();
                         FileInfo info1 = new FileInfo(path.Replace("\"", ""));
-                        MD5Info.Hash hash = new MD5Info.Hash();
+                        HashInfo hash = new HashInfo();
                         hash.SHA256 = HashUtils.GetSHA2565Hash(info1);
                         hash.MD5 = HashUtils.GetMD5Hash(info1);
                         info.Used.Add(hash);

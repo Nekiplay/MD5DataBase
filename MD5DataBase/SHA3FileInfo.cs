@@ -4,20 +4,32 @@ using System.Collections.Generic;
 
 namespace MD5DataBase
 {
-    public class MD5Info 
+    public class SHA3FileInfo 
     {
-        public Hash hash = new Hash();
+        [JsonProperty("Hash")]
+        public HashInfo hash = new HashInfo();
         public string Name { get; set; }
+        public string OriginalName { get; set; }
         public string Extension { get; set; }
         public string Description { get; set; }
         public string Version { get; set; }
         public string Game { get; set; }
         public string Site { get; set; }
         public List<Type> Types = new List<Type>();
+        public List<PornographyType> PornographyTypes = new List<PornographyType>();
 
-        public List<Hash> Libs = new List<Hash>();
-        public List<Hash> Used = new List<Hash>();
-
+        public List<HashInfo> Libs = new List<HashInfo>();
+        public List<HashInfo> Used = new List<HashInfo>();
+        public enum PornographyType
+        {
+            Default,
+            CP,
+            Hentai,
+            Loli,
+            Elf,
+            Furry,
+            Other,
+        }
         public enum Type
         {
             Cheat,
@@ -29,16 +41,7 @@ namespace MD5DataBase
             Mod,
             Game,
             ResourcePack,
-            CP,
-            Porno,
-            Hentai,
             ScreenShare,
-        }
-
-        public class Hash
-        {
-            public string MD5;
-            public string SHA256;
         }
 
         public string ToJson()
@@ -50,13 +53,13 @@ namespace MD5DataBase
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, settings);
         }
 
-        public static MD5Info FromJson(string json)
+        public static SHA3FileInfo FromJson(string json)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings();
             settings.Converters.Add(new JavaScriptDateTimeConverter());
             settings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
             settings.Formatting = Formatting.Indented;
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<MD5Info>(json, settings);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SHA3FileInfo>(json, settings);
         }
     }
 }

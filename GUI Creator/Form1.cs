@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,7 +19,7 @@ namespace GUI_Creator
         {
             InitializeComponent();
         }
-        MD5Info current_md5_info;
+        SHA3FileInfo current_md5_info;
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -32,7 +33,7 @@ namespace GUI_Creator
                 guna2TextBox4.Text = "";
                 guna2TextBox5.Text = "";
 
-                string[] names = Enum.GetNames(typeof(MD5Info.Type));
+                string[] names = Enum.GetNames(typeof(SHA3FileInfo.Type));
                 int index = 0;
                 foreach (string n in names)
                 {
@@ -40,16 +41,25 @@ namespace GUI_Creator
                     index++;
                 }
 
+                string[] names3 = Enum.GetNames(typeof(SHA3FileInfo.PornographyType));
+                int index3 = 0;
+                foreach (string n in names3)
+                {
+                    checkedListBox2.SetItemChecked(index3, false);
+                    index3++;
+                }
+
                 FileInfo file = new FileInfo(openFileDialog.FileName);
                 string md5 = HashUtils.GetMD5Hash(file);
                 string sha256 = HashUtils.GetSHA2565Hash(file);
+                string sha3 = HashUtils.GetSHA3Hash(file);
                 label1.Text = "MD5: " + md5;
-                label2.Text = "SHA256: " + sha256;
+                label2.Text = "SHA3: " + sha3;
 
-                MD5Extractor extractor = new MD5Extractor();
+                SHA3Extractor extractor = new SHA3Extractor();
                 try
                 {
-                    MD5Info info = extractor.GetInfoFromCloud(md5);
+                    SHA3FileInfo info = extractor.GetFileInfoFromCloud(sha3);
                     if (info != null)
                     {
                         current_md5_info = info;
@@ -58,10 +68,11 @@ namespace GUI_Creator
                         guna2TextBox3.Text = info.Description;
                         guna2TextBox4.Text = info.Game;
                         guna2TextBox5.Text = info.Site;
+                        info.OriginalName = file.Name;
 
                         foreach (var type in info.Types)
                         {
-                            string[] names2 = Enum.GetNames(typeof(MD5Info.Type));
+                            string[] names2 = Enum.GetNames(typeof(SHA3FileInfo.Type));
                             int index2 = 0;
                             foreach (string n in names2)
                             {
@@ -72,15 +83,28 @@ namespace GUI_Creator
                                 index2++;
                             }
                         }
+
+                        foreach (var type in info.PornographyTypes)
+                        {
+                            string[] names2 = Enum.GetNames(typeof(SHA3FileInfo.PornographyType));
+                            int index2 = 0;
+                            foreach (string n in names2)
+                            {
+                                if (n == type.ToString())
+                                {
+                                    checkedListBox2.SetItemChecked(index2, true);
+                                }
+                                index2++;
+                            }
+                        }
                     }
                 }
                 catch
                 {
-                    current_md5_info = new MD5Info();
-                    MD5Info.Hash hash = new MD5Info.Hash();
-                    hash.MD5 = md5;
-                    hash.SHA256 = sha256;
+                    current_md5_info = new SHA3FileInfo();
+                    HashInfo hash = new HashInfo(md5, sha256, sha3);
                     current_md5_info.hash = hash;
+                    current_md5_info.OriginalName = file.Name;
                     current_md5_info.Extension = file.Extension;
                 }
             }
@@ -88,8 +112,8 @@ namespace GUI_Creator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string[] names = Enum.GetNames(typeof(MD5Info.Type));
-            checkedListBox1.Items.AddRange(names);
+            checkedListBox1.Items.AddRange(Enum.GetNames(typeof(SHA3FileInfo.Type)));
+            checkedListBox2.Items.AddRange(Enum.GetNames(typeof(SHA3FileInfo.PornographyType)));
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -101,17 +125,28 @@ namespace GUI_Creator
                 current_md5_info.Description = guna2TextBox3.Text;
                 current_md5_info.Game = guna2TextBox4.Text;
                 current_md5_info.Site = guna2TextBox5.Text;
+                current_md5_info.Types.Clear();
+                current_md5_info.PornographyTypes.Clear();
                 foreach (object o in checkedListBox1.CheckedItems)
                 {
                     string type = o.ToString();
-                    MD5Info.Type type1 = MD5Info.Type.Cheat;
+                    SHA3FileInfo.Type type1 = SHA3FileInfo.Type.Cheat;
                     Enum.TryParse(type, out type1);
                     current_md5_info.Types.Add(type1);
                 }
+                foreach (object o in checkedListBox2.CheckedItems)
+                {
+                    string type = o.ToString();
+                    SHA3FileInfo.PornographyType type1 = SHA3FileInfo.PornographyType.Other;
+                    Enum.TryParse(type, out type1);
+                    current_md5_info.PornographyTypes.Add(type1);
+                }
                 Directory.CreateDirectory("output");
-                File.Create("output\\" + current_md5_info.hash.MD5 + ".json").Close();
+                Directory.CreateDirectory("output\\files");
+                string path = "output\\files\\" + current_md5_info.hash.SHA3256 + ".json";
+                File.Create(path).Close();
                 string json = current_md5_info.ToJson();
-                File.WriteAllText("output\\" + current_md5_info.hash.MD5 + ".json", json);
+                File.WriteAllText(path, json);
             }
         }
 
@@ -130,13 +165,12 @@ namespace GUI_Creator
                         FileInfo file = new FileInfo(f);
                         string md5 = HashUtils.GetMD5Hash(file);
                         string sha256 = HashUtils.GetSHA2565Hash(file);
-                        MD5Info.Hash hash = new MD5Info.Hash();
-                        hash.MD5 = md5;
-                        hash.SHA256 = sha256;
+                        string sha3256 = HashUtils.GetSHA3Hash(file);
+                        HashInfo hash = new HashInfo(md5, sha256, sha3256);
                         bool find = false;
-                        foreach (MD5Info.Hash hash1 in current_md5_info.Libs)
+                        foreach (HashInfo hash1 in current_md5_info.Libs)
                         {
-                            if (hash1.MD5 == hash.MD5 && hash1.SHA256 == hash.SHA256)
+                            if (hash1.MD5 == hash.MD5 && hash1.SHA3256 == hash.SHA3256)
                             {
                                 find = true;
                             }
@@ -165,11 +199,10 @@ namespace GUI_Creator
                         FileInfo file = new FileInfo(f);
                         string md5 = HashUtils.GetMD5Hash(file);
                         string sha256 = HashUtils.GetSHA2565Hash(file);
-                        MD5Info.Hash hash = new MD5Info.Hash();
-                        hash.MD5 = md5;
-                        hash.SHA256 = sha256;
+                        string sha3256 = HashUtils.GetSHA3Hash(file);
+                        HashInfo hash = new HashInfo(md5, sha256, sha3256);
                         bool find = false;
-                        foreach (MD5Info.Hash hash1 in current_md5_info.Used)
+                        foreach (HashInfo hash1 in current_md5_info.Used)
                         {
                             if (hash1.MD5 == hash.MD5 && hash1.SHA256 == hash.SHA256)
                             {
@@ -183,6 +216,124 @@ namespace GUI_Creator
                     }
                 }
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                string text = guna2TextBox6.Text;
+                Directory.CreateDirectory("output");
+                Directory.CreateDirectory("output\\text");
+                Directory.CreateDirectory("output\\text\\utf7");
+                Directory.CreateDirectory("output\\text\\utf8");
+                Directory.CreateDirectory("output\\text\\utf32");
+                Directory.CreateDirectory("output\\text\\unicode");
+                Directory.CreateDirectory("output\\text\\ascii");
+                Directory.CreateDirectory("output\\text\\bigendianunicode");
+                try
+                {
+                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.BigEndianUnicode);
+                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.BigEndianUnicode);
+                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
+                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
+                    SHA3TextInfo textInfo = new SHA3TextInfo();
+                    textInfo.text = text;
+                    textInfo.hash = hashInfo;
+                    string path = "output\\text\\bigendianunicode\\" + sha3256 + ".json";
+                    File.Create(path).Close();
+                    string json = textInfo.ToJson();
+                    File.WriteAllText(path, json);
+                } 
+                catch { }
+                try
+                {
+                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.UTF7);
+                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.UTF7);
+
+                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
+                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
+                    SHA3TextInfo textInfo = new SHA3TextInfo();
+                    textInfo.text = text;
+                    textInfo.hash = hashInfo;
+                    string path = "output\\text\\utf7\\" + sha3256 + ".json";
+                    File.Create(path).Close();
+                    string json = textInfo.ToJson();
+                    File.WriteAllText(path, json);
+                }
+                catch { }
+                try
+                {
+                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.UTF8);
+                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.UTF8);
+
+                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
+                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
+                    SHA3TextInfo textInfo = new SHA3TextInfo();
+                    textInfo.text = text;
+                    textInfo.hash = hashInfo;
+                    string path = "output\\text\\utf8\\" + sha3256 + ".json";
+                    File.Create(path).Close();
+                    string json = textInfo.ToJson();
+                    File.WriteAllText(path, json);
+                }
+                catch { }
+                try
+                {
+                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.Unicode);
+                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.Unicode);
+
+                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
+                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
+                    SHA3TextInfo textInfo = new SHA3TextInfo();
+                    textInfo.text = text;
+                    textInfo.hash = hashInfo;
+                    string path = "output\\text\\unicode\\" + sha3256 + ".json";
+                    File.Create(path).Close();
+                    string json = textInfo.ToJson();
+                    File.WriteAllText(path, json);
+                }
+                catch { }
+
+                try
+                {
+                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.ASCII);
+                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.ASCII);
+
+                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
+                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
+                    SHA3TextInfo textInfo = new SHA3TextInfo();
+                    textInfo.text = text;
+                    textInfo.hash = hashInfo;
+                    string path = "output\\text\\ascii\\" + sha3256 + ".json";
+                    File.Create(path).Close();
+                    string json = textInfo.ToJson();
+                    File.WriteAllText(path, json);
+                }
+                catch { }
+
+                try
+                {
+                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.UTF32);
+                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.UTF32);
+
+                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
+                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
+                    SHA3TextInfo textInfo = new SHA3TextInfo();
+                    textInfo.text = text;
+                    textInfo.hash = hashInfo;
+                    string path = "output\\text\\utf32\\" + sha3256 + ".json";
+                    File.Create(path).Close();
+                    string json = textInfo.ToJson();
+                    File.WriteAllText(path, json);
+                }
+                catch { }
+            });
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

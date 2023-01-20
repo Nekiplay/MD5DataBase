@@ -34,6 +34,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SHA3.Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SHA3.Net.2.0.0\lib\netstandard2.0\SHA3.Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,9 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MD5Extractor.cs" />
-    <Compile Include="MD5Info.cs" />
+    <Compile Include="HashInfo.cs" />
+    <Compile Include="SHA3Extractor.cs" />
+    <Compile Include="SHA3FileInfo.cs" />
     <Compile Include="HashUtils.cs" />
+    <Compile Include="SHA3TextInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
