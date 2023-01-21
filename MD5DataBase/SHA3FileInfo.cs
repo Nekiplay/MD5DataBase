@@ -42,6 +42,8 @@ namespace MD5DataBase
             Game,
             ResourcePack,
             ScreenShare,
+            Plugin,
+            Addon,
         }
 
         public string ToJson()

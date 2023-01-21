@@ -147,7 +147,7 @@ namespace GUI_Creator
                 File.Create(path).Close();
                 string json = current_md5_info.ToJson();
                 File.WriteAllText(path, json);
-                File.SetCreationTime(path, new DateTime(2023, 0, 0));
+                File.SetCreationTime(path, new DateTime(2023, 1, 1));
             }
         }
 

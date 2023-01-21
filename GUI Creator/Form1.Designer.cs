@@ -46,19 +46,19 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.button5 = new System.Windows.Forms.Button();
             this.guna2TextBox6 = new Guna.UI2.WinForms.Guna2TextBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -250,6 +250,7 @@
             this.guna2TextBox3.HoverState.Parent = this.guna2TextBox3;
             this.guna2TextBox3.HoverState.PlaceholderForeColor = System.Drawing.SystemColors.ControlText;
             this.guna2TextBox3.Location = new System.Drawing.Point(6, 81);
+            this.guna2TextBox3.Multiline = true;
             this.guna2TextBox3.Name = "guna2TextBox3";
             this.guna2TextBox3.PasswordChar = '\0';
             this.guna2TextBox3.PlaceholderForeColor = System.Drawing.SystemColors.ControlText;
@@ -357,6 +358,26 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Files";
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.checkedListBox2);
+            this.groupBox8.Location = new System.Drawing.Point(349, 199);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(136, 87);
+            this.groupBox8.TabIndex = 9;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Pornography type";
+            // 
+            // checkedListBox2
+            // 
+            this.checkedListBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.checkedListBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.checkedListBox2.FormattingEnabled = true;
+            this.checkedListBox2.Location = new System.Drawing.Point(7, 15);
+            this.checkedListBox2.Name = "checkedListBox2";
+            this.checkedListBox2.Size = new System.Drawing.Size(120, 62);
+            this.checkedListBox2.TabIndex = 0;
+            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.button5);
@@ -409,34 +430,15 @@
             this.guna2TextBox6.Size = new System.Drawing.Size(419, 24);
             this.guna2TextBox6.TabIndex = 8;
             // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.checkedListBox2);
-            this.groupBox8.Location = new System.Drawing.Point(349, 199);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(136, 87);
-            this.groupBox8.TabIndex = 9;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Pornography type";
-            // 
-            // checkedListBox2
-            // 
-            this.checkedListBox2.BackColor = System.Drawing.SystemColors.Control;
-            this.checkedListBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.checkedListBox2.FormattingEnabled = true;
-            this.checkedListBox2.Location = new System.Drawing.Point(7, 15);
-            this.checkedListBox2.Name = "checkedListBox2";
-            this.checkedListBox2.Size = new System.Drawing.Size(120, 62);
-            this.checkedListBox2.TabIndex = 0;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(520, 432);
+            this.ClientSize = new System.Drawing.Size(518, 432);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "GUI Creator";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -447,8 +449,8 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
