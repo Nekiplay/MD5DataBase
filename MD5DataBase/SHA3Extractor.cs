@@ -20,21 +20,9 @@ namespace MD5DataBase
                 return SHA3FileInfo.FromJson(json);
             }
         }
-        public SHA3TextInfo GetTextInfoFromCloud(string SHA3256, Encoding encoding)
+        public SHA3TextInfo GetTextInfoFromCloud(string SHA3256)
         {
             string link = "https://github.com/Nekiplay/SHA3List/raw/main/text/";
-            if (encoding == Encoding.Unicode)
-                link += "unicode/";
-            else if (encoding == Encoding.BigEndianUnicode)
-                link += "bigendianunicode/";
-            else if (encoding == Encoding.ASCII)
-                link += "ascii/";
-            else if (encoding == Encoding.UTF7)
-                link += "utf7/";
-            else if (encoding == Encoding.UTF8)
-                link += "utf8/";
-            else if (encoding == Encoding.UTF32)
-                link += "utf32/";
             using (WebClient wc = new WebClient())
             {
                 string json = wc.DownloadString(link + SHA3256 + ".json");

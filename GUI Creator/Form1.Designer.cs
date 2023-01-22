@@ -106,9 +106,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 32);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(69, 13);
+            this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "SHA256: null";
+            this.label2.Text = "SHA3: null";
             // 
             // groupBox2
             // 

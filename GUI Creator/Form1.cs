@@ -226,12 +226,6 @@ namespace GUI_Creator
                 string text = guna2TextBox6.Text;
                 Directory.CreateDirectory("output");
                 Directory.CreateDirectory("output\\text");
-                Directory.CreateDirectory("output\\text\\utf7");
-                Directory.CreateDirectory("output\\text\\utf8");
-                Directory.CreateDirectory("output\\text\\utf32");
-                Directory.CreateDirectory("output\\text\\unicode");
-                Directory.CreateDirectory("output\\text\\ascii");
-                Directory.CreateDirectory("output\\text\\bigendianunicode");
                 try
                 {
                     string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.BigEndianUnicode);
@@ -241,93 +235,11 @@ namespace GUI_Creator
                     SHA3TextInfo textInfo = new SHA3TextInfo();
                     textInfo.text = text;
                     textInfo.hash = hashInfo;
-                    string path = "output\\text\\bigendianunicode\\" + sha3256 + ".json";
+                    string path = "output\\text\\" + sha3256 + ".json";
                     File.Create(path).Close();
                     string json = textInfo.ToJson();
                     File.WriteAllText(path, json);
                 } 
-                catch { }
-                try
-                {
-                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.UTF7);
-                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.UTF7);
-
-                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
-                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
-                    SHA3TextInfo textInfo = new SHA3TextInfo();
-                    textInfo.text = text;
-                    textInfo.hash = hashInfo;
-                    string path = "output\\text\\utf7\\" + sha3256 + ".json";
-                    File.Create(path).Close();
-                    string json = textInfo.ToJson();
-                    File.WriteAllText(path, json);
-                }
-                catch { }
-                try
-                {
-                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.UTF8);
-                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.UTF8);
-
-                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
-                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
-                    SHA3TextInfo textInfo = new SHA3TextInfo();
-                    textInfo.text = text;
-                    textInfo.hash = hashInfo;
-                    string path = "output\\text\\utf8\\" + sha3256 + ".json";
-                    File.Create(path).Close();
-                    string json = textInfo.ToJson();
-                    File.WriteAllText(path, json);
-                }
-                catch { }
-                try
-                {
-                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.Unicode);
-                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.Unicode);
-
-                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
-                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
-                    SHA3TextInfo textInfo = new SHA3TextInfo();
-                    textInfo.text = text;
-                    textInfo.hash = hashInfo;
-                    string path = "output\\text\\unicode\\" + sha3256 + ".json";
-                    File.Create(path).Close();
-                    string json = textInfo.ToJson();
-                    File.WriteAllText(path, json);
-                }
-                catch { }
-
-                try
-                {
-                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.ASCII);
-                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.ASCII);
-
-                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
-                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
-                    SHA3TextInfo textInfo = new SHA3TextInfo();
-                    textInfo.text = text;
-                    textInfo.hash = hashInfo;
-                    string path = "output\\text\\ascii\\" + sha3256 + ".json";
-                    File.Create(path).Close();
-                    string json = textInfo.ToJson();
-                    File.WriteAllText(path, json);
-                }
-                catch { }
-
-                try
-                {
-                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.UTF32);
-                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.UTF32);
-
-                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
-                    HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
-                    SHA3TextInfo textInfo = new SHA3TextInfo();
-                    textInfo.text = text;
-                    textInfo.hash = hashInfo;
-                    string path = "output\\text\\utf32\\" + sha3256 + ".json";
-                    File.Create(path).Close();
-                    string json = textInfo.ToJson();
-                    File.WriteAllText(path, json);
-                }
                 catch { }
             });
         }

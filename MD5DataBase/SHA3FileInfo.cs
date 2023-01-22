@@ -44,6 +44,7 @@ namespace MD5DataBase
             ScreenShare,
             Plugin,
             Addon,
+            Script,
         }
 
         public string ToJson()
