@@ -20,6 +20,7 @@ namespace GUI_Creator
             InitializeComponent();
         }
         SHA3FileInfo current_md5_info;
+        SHA3byFileName byFileName;
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -55,58 +56,108 @@ namespace GUI_Creator
                 string sha3 = HashUtils.GetSHA3Hash(file);
                 label1.Text = "MD5: " + md5;
                 label2.Text = "SHA3: " + sha3;
-
+                HashInfo hash = new HashInfo(md5, sha256, sha3);
                 SHA3Extractor extractor = new SHA3Extractor();
+                #region Hash by FileName
+                string filePathWithoutExt = Path.ChangeExtension(file.Name, null);
                 try
                 {
-                    SHA3FileInfo info = extractor.GetFileInfoFromCloud(sha3);
-                    if (info != null)
+                    try
                     {
-                        current_md5_info = info;
-                        guna2TextBox1.Text = info.Name;
-                        guna2TextBox2.Text = info.Version;
-                        guna2TextBox3.Text = info.Description;
-                        guna2TextBox4.Text = info.Game;
-                        guna2TextBox5.Text = info.Site;
-                        info.OriginalName = file.Name;
-
-                        foreach (var type in info.Types)
+                        SHA3byFileName info = extractor.GetFileHashByNameFromCloud(filePathWithoutExt);
+                        if (info != null)
                         {
-                            string[] names2 = Enum.GetNames(typeof(SHA3FileInfo.Type));
-                            int index2 = 0;
-                            foreach (string n in names2)
+                            byFileName = info;
+                            bool find = false;
+                            foreach (HashInfo hashinfo in byFileName.hash)
                             {
-                                if (n == type.ToString())
+                                if (hash.SHA3256 == hashinfo.SHA3256)
                                 {
-                                    checkedListBox1.SetItemChecked(index2, true);
+                                    find = true;
                                 }
-                                index2++;
                             }
-                        }
-
-                        foreach (var type in info.PornographyTypes)
-                        {
-                            string[] names2 = Enum.GetNames(typeof(SHA3FileInfo.PornographyType));
-                            int index2 = 0;
-                            foreach (string n in names2)
+                            if (find == false)
                             {
-                                if (n == type.ToString())
-                                {
-                                    checkedListBox2.SetItemChecked(index2, true);
-                                }
-                                index2++;
+                                byFileName.hash.Add(hash);
                             }
                         }
                     }
+                    catch 
+                    {
+                        byFileName = new SHA3byFileName();
+                        bool find = false;
+                        foreach (HashInfo hashinfo in byFileName.hash)
+                        {
+                            if (hash.SHA3256 == hashinfo.SHA3256)
+                            {
+                                find = true;
+                            }
+                        }
+                        if (find == false)
+                        {
+                            byFileName.hash.Add(hash);
+                        }
+                        byFileName.OriginalFileName = filePathWithoutExt;
+                    }
                 }
-                catch
+                catch { }
+                #endregion
+
+                #region FileInfo by Hash
+                try
                 {
-                    current_md5_info = new SHA3FileInfo();
-                    HashInfo hash = new HashInfo(md5, sha256, sha3);
-                    current_md5_info.hash = hash;
-                    current_md5_info.OriginalName = file.Name;
-                    current_md5_info.Extension = file.Extension;
+                    try
+                    {
+                        SHA3FileInfo info = extractor.GetFileInfoFromCloud(sha3);
+                        if (info != null)
+                        {
+                            current_md5_info = info;
+                            guna2TextBox1.Text = info.Name;
+                            guna2TextBox2.Text = info.Version;
+                            guna2TextBox3.Text = info.Description;
+                            guna2TextBox4.Text = info.Game;
+                            guna2TextBox5.Text = info.Site;
+                            info.OriginalName = file.Name;
+
+                            foreach (var type in info.Types)
+                            {
+                                string[] names2 = Enum.GetNames(typeof(SHA3FileInfo.Type));
+                                int index2 = 0;
+                                foreach (string n in names2)
+                                {
+                                    if (n == type.ToString())
+                                    {
+                                        checkedListBox1.SetItemChecked(index2, true);
+                                    }
+                                    index2++;
+                                }
+                            }
+
+                            foreach (var type in info.PornographyTypes)
+                            {
+                                string[] names2 = Enum.GetNames(typeof(SHA3FileInfo.PornographyType));
+                                int index2 = 0;
+                                foreach (string n in names2)
+                                {
+                                    if (n == type.ToString())
+                                    {
+                                        checkedListBox2.SetItemChecked(index2, true);
+                                    }
+                                    index2++;
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        current_md5_info = new SHA3FileInfo();
+                        current_md5_info.hash = hash;
+                        current_md5_info.OriginalName = file.Name;
+                        current_md5_info.Extension = file.Extension;
+                    }
                 }
+                catch { }
+                #endregion
             }
         }
 
@@ -146,6 +197,16 @@ namespace GUI_Creator
                 string path = "output\\files\\" + current_md5_info.hash.SHA3256 + ".json";
                 File.Create(path).Close();
                 string json = current_md5_info.ToJson();
+                File.WriteAllText(path, json);
+                File.SetCreationTime(path, new DateTime(2023, 1, 1));
+            }
+            if (byFileName != null)
+            {
+                byFileName.FileName = guna2TextBox1.Text;
+                Directory.CreateDirectory("output\\file_name_to_sha3");
+                string path = "output\\file_name_to_sha3\\" + byFileName.OriginalFileName + ".json";
+                File.Create(path).Close();
+                string json = byFileName.ToJson();
                 File.WriteAllText(path, json);
                 File.SetCreationTime(path, new DateTime(2023, 1, 1));
             }

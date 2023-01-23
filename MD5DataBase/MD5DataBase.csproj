@@ -52,6 +52,7 @@
     <Compile Include="SHA3Extractor.cs" />
     <Compile Include="SHA3FileInfo.cs" />
     <Compile Include="HashUtils.cs" />
+    <Compile Include="SHA3byFileName.cs" />
     <Compile Include="SHA3TextInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

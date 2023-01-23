@@ -20,6 +20,14 @@ namespace MD5DataBase
                 return SHA3FileInfo.FromJson(json);
             }
         }
+        public SHA3byFileName GetFileHashByNameFromCloud(string filename)
+        {
+            using (WebClient wc = new WebClient())
+            {
+                string json = wc.DownloadString("https://github.com/Nekiplay/SHA3List/raw/main/file_name_to_sha3/" + filename + ".json");
+                return SHA3byFileName.FromJson(json);
+            }
+        }
         public SHA3TextInfo GetTextInfoFromCloud(string SHA3256)
         {
             string link = "https://github.com/Nekiplay/SHA3List/raw/main/text/";

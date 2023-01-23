@@ -45,6 +45,9 @@ namespace MD5DataBase
             Plugin,
             Addon,
             Script,
+            Macros,
+            II,
+            Injector,
         }
 
         public string ToJson()
