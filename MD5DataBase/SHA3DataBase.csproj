@@ -7,8 +7,8 @@
     <ProjectGuid>{AB4A276B-8D2F-4EFB-9895-656C237F0BD1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MD5DataBase</RootNamespace>
-    <AssemblyName>MD5DataBase</AssemblyName>
+    <RootNamespace>SHA3DataBase</RootNamespace>
+    <AssemblyName>SHA3DataBase</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

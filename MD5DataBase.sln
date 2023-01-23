@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MD5DataBase", "MD5DataBase\MD5DataBase.csproj", "{AB4A276B-8D2F-4EFB-9895-656C237F0BD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHA3DataBase", "MD5DataBase\SHA3DataBase.csproj", "{AB4A276B-8D2F-4EFB-9895-656C237F0BD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleCreator", "ConsoleApp1\ConsoleCreator.csproj", "{9F034484-D7E0-48EE-8E70-52F0F2FE31C2}"
 EndProject

@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 
-namespace MD5DataBase
+namespace SHA3DataBase
 {
     public class SHA3FileInfo 
     {

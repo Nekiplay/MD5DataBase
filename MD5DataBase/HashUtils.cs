@@ -1,14 +1,10 @@
 ﻿using SHA3.Net;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace MD5DataBase
+namespace SHA3DataBase
 {
     public class HashUtils
     {
@@ -23,25 +19,25 @@ namespace MD5DataBase
                 }
             }
         }
-        public static string GetSHA3Hash(string text, Encoding encoding)
+        public static string GetSHA3Hash(string text)
         {
             using (var shaAlg = Sha3.Sha3256())
             {
-                byte[] hash = shaAlg.ComputeHash(encoding.GetBytes(text));
+                byte[] hash = shaAlg.ComputeHash(Encoding.UTF8.GetBytes(text));
                 return BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
             }
         }
-        public static string GetMD5Hash(string text, Encoding encoding)
+        public static string GetMD5Hash(string text)
         {
-            byte[] bytes = encoding.GetBytes(text);
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
             byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(bytes);
 
             string encoded = BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
             return encoded;
         }
-        public static string GetSHA2565Hash(string text, Encoding encoding)
+        public static string GetSHA2565Hash(string text)
         {
-            byte[] bytes = encoding.GetBytes(text);
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
             using (SHA256 SHA256 = SHA256Managed.Create())
             {
                 return Convert.ToBase64String(SHA256.ComputeHash(bytes));

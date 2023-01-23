@@ -1,9 +1,7 @@
 ﻿using System.IO;
 using System.Net;
-using System.Text;
-using static System.Net.WebRequestMethods;
 
-namespace MD5DataBase
+namespace SHA3DataBase
 {
     public class SHA3Extractor
     {

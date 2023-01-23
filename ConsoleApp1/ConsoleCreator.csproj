@@ -51,9 +51,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MD5DataBase\MD5DataBase.csproj">
+    <ProjectReference Include="..\MD5DataBase\SHA3DataBase.csproj">
       <Project>{ab4a276b-8d2f-4efb-9895-656c237f0bd1}</Project>
-      <Name>MD5DataBase</Name>
+      <Name>SHA3DataBase</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

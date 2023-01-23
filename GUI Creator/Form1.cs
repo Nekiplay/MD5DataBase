@@ -1,12 +1,6 @@
-﻿using MD5DataBase;
+﻿using SHA3DataBase;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -289,9 +283,9 @@ namespace GUI_Creator
                 Directory.CreateDirectory("output\\text");
                 try
                 {
-                    string md5_utf8 = HashUtils.GetMD5Hash(text, Encoding.BigEndianUnicode);
-                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text, Encoding.BigEndianUnicode);
-                    string sha3256 = HashUtils.GetSHA3Hash(text, Encoding.BigEndianUnicode);
+                    string md5_utf8 = HashUtils.GetMD5Hash(text);
+                    string sha256_utf8 = HashUtils.GetSHA2565Hash(text);
+                    string sha3256 = HashUtils.GetSHA3Hash(text);
                     HashInfo hashInfo = new HashInfo(md5_utf8, sha256_utf8, sha3256);
                     SHA3TextInfo textInfo = new SHA3TextInfo();
                     textInfo.text = text;

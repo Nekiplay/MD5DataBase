@@ -1,12 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MD5DataBase
+namespace SHA3DataBase
 {
     public class SHA3TextInfo
     {
